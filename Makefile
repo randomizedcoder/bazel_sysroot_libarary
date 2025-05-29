@@ -36,6 +36,7 @@ copy: build
 push:
 	git add .
 	git commit -m "Update common library sysroot $(shell date +%Y-%m-%d)" || true
+	git remote set-url origin git@github.com:randomizedcoder/bazel_sysroot_library.git
 	git push
 
 update-all: update-flake build copy push

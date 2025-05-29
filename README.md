@@ -1,32 +1,58 @@
-# Bazel Sysroot Library
+# Bazel Sysroot for Common Libraries
 
-This repository provides a common set of system libraries and headers for Bazel builds. It includes essential libraries for most C/C++ projects, such as compression, networking, XML parsing, and more.
+This repository contains a sysroot with common system libraries and headers that can be used with Bazel builds. It includes essential libraries needed for most C/C++ projects.
 
-## Included Libraries
+## Available Make Targets
 
-The sysroot includes a comprehensive set of libraries. [Click here to see the full list](default.nix#L5).
+- `make help` - Show available targets and their descriptions
+- `make update-flake` - Update flake.lock with latest dependencies
+- `make build` - Build the common library sysroot using nix build
+- `make tarball` - Create a .tar.gz archive of the common library sysroot
+- `make nix-tarball` - Create a .tar.gz archive using nix build
+- `make copy` - Copy files from Nix store to sysroot directory
+- `make push` - Push changes to GitHub with dated commit
+- `make update-all` - Update flake, build, copy, and push
+- `make clean` - Clean up build artifacts
 
-## Installation
+## Repository Structure
 
-To use this sysroot, you'll need to have Nix installed. If you don't have Nix installed yet, please follow the [Nix Installation Guide](https://nixos.wiki/wiki/Nix_Installation_Guide).
+```
+.
+├── default.nix      # Nix package definition
+├── flake.nix        # Nix flake configuration
+├── Makefile         # Build and maintenance targets
+├── sysroot/         # Sysroot files (generated)
+│   ├── include/     # Header files
+│   └── lib/         # Library files
+└── .gitignore      # Git ignore rules
+```
 
 ## Usage
 
-This repository includes a Makefile with several useful targets. To see all available commands, run:
+1. Build the sysroot:
+   ```bash
+   make build
+   ```
 
-```bash
-make help
-```
+2. Copy files to the repository:
+   ```bash
+   make copy
+   ```
 
-The main targets are:
-- `make build` - Build the sysroot
-- `make tarball` - Create a distributable .tar.gz archive
-- `make update-flake` - Update dependencies
-- `make push` - Push changes to GitHub
+3. Create a tarball:
+   ```bash
+   make tarball
+   # or
+   make nix-tarball
+   ```
 
-## Self-Hosting
+4. Update everything and push:
+   ```bash
+   make update-all
+   ```
 
-If you need to host the sysroot tarball yourself (e.g., without GitHub access), you can:
-1. Run `make tarball` to create the archive
-2. Host the resulting `bazel-sysroot-library.tar.gz` on your web server
-3. Update your Bazel WORKSPACE to point to your hosted tarball
+## Dependencies
+
+- Nix package manager
+- rsync (for copying files)
+- git (for version control)
