@@ -1,3 +1,3 @@
-# bazel_sysroot_libarary
+# bazel_sysroot_library
 
 sysroot for bazel created by nix
