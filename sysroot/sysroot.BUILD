@@ -1,3 +1,20 @@
+package(default_visibility = ["//visibility:public"])
+
+filegroup(
+    name = "all",
+    srcs = glob(["**"]),
+)
+
+filegroup(
+    name = "include",
+    srcs = glob(["include/**"]),
+)
+
+filegroup(
+    name = "lib",
+    srcs = glob(["lib/**"]),
+)
+
 cc_library(
     name = "system_deps",
     srcs = glob(["lib/*.so*"]),
