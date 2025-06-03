@@ -1,20 +1,29 @@
 package(default_visibility = ["//visibility:public"])
 
+# Main filegroup that includes everything
 filegroup(
     name = "all",
-    srcs = glob(["**"]),
+    srcs = [
+        ":include",
+        ":lib",
+    ],
 )
 
+# Include directory filegroup
 filegroup(
     name = "include",
     srcs = glob(["include/**"]),
+    allow_empty = True,
 )
 
+# Library directory filegroup
 filegroup(
     name = "lib",
     srcs = glob(["lib/**"]),
+    allow_empty = True,
 )
 
+# Shared library target
 cc_library(
     name = "system_deps",
     srcs = glob(["lib/*.so*"]),
@@ -24,7 +33,7 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 
-# Separate library for static linking
+# Static library target
 cc_library(
     name = "system_deps_static",
     srcs = glob(["lib/*.a"]),
@@ -33,3 +42,4 @@ cc_library(
     linkstatic = 1,
     visibility = ["//visibility:public"],
 )
+

@@ -67,6 +67,53 @@ let
     util-linux.dev
     util-linux.out
   ];
+
+  build_file_content = ''
+package(default_visibility = ["//visibility:public"])
+
+# Main filegroup that includes everything
+filegroup(
+    name = "all",
+    srcs = [
+        ":include",
+        ":lib",
+    ],
+)
+
+# Include directory filegroup
+filegroup(
+    name = "include",
+    srcs = glob(["include/**"]),
+    allow_empty = True,
+)
+
+# Library directory filegroup
+filegroup(
+    name = "lib",
+    srcs = glob(["lib/**"]),
+    allow_empty = True,
+)
+
+# Shared library target
+cc_library(
+    name = "system_deps",
+    srcs = glob(["lib/*.so*"]),
+    hdrs = glob(["include/**/*.h"]),
+    includes = ["include"],
+    linkstatic = 0,
+    visibility = ["//visibility:public"],
+)
+
+# Static library target
+cc_library(
+    name = "system_deps_static",
+    srcs = glob(["lib/*.a"]),
+    hdrs = glob(["include/**/*.h"]),
+    includes = ["include"],
+    linkstatic = 1,
+    visibility = ["//visibility:public"],
+)
+'';
 in
 pkgs.stdenv.mkDerivation {
   name = "bazel-sysroot-library";
@@ -146,42 +193,8 @@ pkgs.stdenv.mkDerivation {
     if [ -d "${pkgs.util-linux.out}/lib" ]; then cp -r ${pkgs.util-linux.out}/lib/* $out/sysroot/lib/ || true; fi
 
     # Create sysroot.BUILD file
-    cat > $out/sysroot/sysroot.BUILD << 'EOF'
-package(default_visibility = ["//visibility:public"])
-
-filegroup(
-    name = "all",
-    srcs = glob(["**"]),
-)
-
-filegroup(
-    name = "include",
-    srcs = glob(["include/**"]),
-)
-
-filegroup(
-    name = "lib",
-    srcs = glob(["lib/**"]),
-)
-
-cc_library(
-    name = "system_deps",
-    srcs = glob(["lib/*.so*"]),
-    hdrs = glob(["include/**/*.h"]),
-    includes = ["include"],
-    linkstatic = 0,
-    visibility = ["//visibility:public"],
-)
-
-# Separate library for static linking
-cc_library(
-    name = "system_deps_static",
-    srcs = glob(["lib/*.a"]),
-    hdrs = glob(["include/**/*.h"]),
-    includes = ["include"],
-    linkstatic = 1,
-    visibility = ["//visibility:public"],
-)
+    cat > $out/sysroot/BUILD.sysroot.bazel << 'EOF'
+${build_file_content}
 EOF
   '';
 }

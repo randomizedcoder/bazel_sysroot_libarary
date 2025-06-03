@@ -1,58 +1,98 @@
-# Bazel Sysroot for Common Libraries
+# bazel_sysroot_library
 
-This repository contains a sysroot with common system libraries and headers that can be used with Bazel builds. It includes essential libraries needed for most C/C++ projects.
+This sysroot provides common headers and system libraries shared across architectures for Bazel builds. It is designed to be used in conjunction with architecture-specific sysroots for AMD64 and ARM64.
 
-## Available Make Targets
+## Purpose
 
-- `make help` - Show available targets and their descriptions
-- `make update-flake` - Update flake.lock with latest dependencies
-- `make build` - Build the common library sysroot using nix build
-- `make tarball` - Create a .tar.gz archive of the common library sysroot
-- `make nix-tarball` - Create a .tar.gz archive using nix build
-- `make copy` - Copy files from Nix store to sysroot directory
-- `make push` - Push changes to GitHub with dated commit
-- `make update-all` - Update flake, build, copy, and push
-- `make clean` - Clean up build artifacts
+The `bazel_sysroot_library` sysroot serves as a common base for all architectures, providing:
+- Common header files (`.h`) used across architectures
+- Common system libraries (both shared `.so` and static `.a`)
+- System dependencies that are architecture-independent
 
-## Repository Structure
+## Directory Structure
 
 ```
-.
-├── default.nix      # Nix package definition
-├── flake.nix        # Nix flake configuration
-├── Makefile         # Build and maintenance targets
-├── sysroot/         # Sysroot files (generated)
-│   ├── include/     # Header files
-│   └── lib/         # Library files
-└── .gitignore      # Git ignore rules
+sysroot/
+├── include/     # Common header files
+├── lib/         # Common system libraries
+└── BUILD.sysroot.bazel
 ```
 
-## Usage
+## BUILD.sysroot.bazel
 
-1. Build the sysroot:
-   ```bash
-   make build
-   ```
+The BUILD file exposes the following targets:
 
-2. Copy files to the repository:
-   ```bash
-   make copy
-   ```
+1. **Filegroups**:
+   - `:all` - Includes both `:include` and `:lib`
+   - `:include` - All header files in the include directory
+   - `:lib` - All library files in the lib directory
 
-3. Create a tarball:
-   ```bash
-   make tarball
-   # or
-   make nix-tarball
-   ```
+2. **Library Targets**:
+   - `:system_deps` - Shared library target for dynamic linking
+   - `:system_deps_static` - Static library target for static linking
 
-4. Update everything and push:
-   ```bash
-   make update-all
-   ```
+## Included Libraries
 
-## Dependencies
+The sysroot includes the following common libraries and their headers:
 
-- Nix package manager
-- rsync (for copying files)
-- git (for version control)
+- Core system libraries:
+  - glibc
+  - gcc-unwrapped
+
+- Compression libraries:
+  - zlib
+  - bzip2
+  - xz
+
+- XML and parsing:
+  - libxml2
+  - expat
+
+- Networking:
+  - openssl
+  - curl
+
+- Text processing:
+  - pcre
+  - pcre2
+
+- JSON:
+  - jansson
+
+- Database:
+  - sqlite
+
+- Image processing:
+  - libpng
+  - libjpeg
+
+- System utilities:
+  - util-linux
+
+## Usage in Bazel
+
+This sysroot is typically used in conjunction with architecture-specific sysroots:
+
+```python
+llvm.sysroot(
+    name = "llvm_toolchain",
+    targets = ["linux-x86_64"],
+    label = "@bazel_sysroot_tarball_amd64//:sysroot",
+    include_prefix = "@bazel_sysroot_library//:include",
+    lib_prefix = "@bazel_sysroot_lib_amd64//:lib",
+    system_libs = [
+        "@bazel_sysroot_library//:system_deps",
+        "@bazel_sysroot_library//:system_deps_static",
+    ],
+)
+```
+
+## Building
+
+To build this sysroot:
+
+```bash
+nix-build default.nix
+```
+
+The output will be a directory containing the sysroot structure with all necessary files and the BUILD.sysroot.bazel file.
