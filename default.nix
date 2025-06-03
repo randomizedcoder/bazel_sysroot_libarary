@@ -192,8 +192,7 @@ pkgs.stdenv.mkDerivation {
     if [ -d "${pkgs.util-linux.dev}/lib" ]; then cp -r ${pkgs.util-linux.dev}/lib/* $out/sysroot/lib/ || true; fi
     if [ -d "${pkgs.util-linux.out}/lib" ]; then cp -r ${pkgs.util-linux.out}/lib/* $out/sysroot/lib/ || true; fi
 
-    # Create sysroot.BUILD file
-    cat > $out/sysroot/BUILD.sysroot.bazel << 'EOF'
+    cat > $out/sysroot/BUILD.bazel << 'EOF'
 ${build_file_content}
 EOF
   '';
