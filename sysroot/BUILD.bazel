@@ -8,8 +8,7 @@ package(default_visibility = ["//visibility:public"])
 filegroup(
     name = "all",
     srcs = [
-        ":include",
-        ":lib",
+        ":usr",
     ],
 )
 
@@ -17,29 +16,37 @@ filegroup(
 filegroup(
     name = "sysroot",
     srcs = [
-        ":include",
-        ":lib",
+        ":usr",
+    ],
+)
+
+# Usr directory filegroup
+filegroup(
+    name = "usr",
+    srcs = [
+        ":usr_include",
+        ":usr_lib",
     ],
 )
 
 # Include directory filegroup
 filegroup(
-    name = "include",
-    srcs = glob(["include/**"]),
+    name = "usr_include",
+    srcs = glob(["usr/include/**"]),
 )
 
 # Library directory filegroup
 filegroup(
-    name = "lib",
-    srcs = glob(["lib/**"]),
+    name = "usr_lib",
+    srcs = glob(["usr/lib/**"]),
 )
 
 # Shared library target
 cc_library(
     name = "system_deps",
-    srcs = glob(["lib/*.so*"]),
-    hdrs = glob(["include/**/*.h"]),
-    includes = ["include"],
+    srcs = glob(["usr/lib/*.so*"]),
+    hdrs = glob(["usr/include/**/*.h"]),
+    includes = ["usr/include"],
     linkstatic = 0,
     visibility = ["//visibility:public"],
 )
@@ -47,9 +54,9 @@ cc_library(
 # Static library target
 cc_library(
     name = "system_deps_static",
-    srcs = glob(["lib/*.a"]),
-    hdrs = glob(["include/**/*.h"]),
-    includes = ["include"],
+    srcs = glob(["usr/lib/*.a"]),
+    hdrs = glob(["usr/include/**/*.h"]),
+    includes = ["usr/include"],
     linkstatic = 1,
     visibility = ["//visibility:public"],
 )
