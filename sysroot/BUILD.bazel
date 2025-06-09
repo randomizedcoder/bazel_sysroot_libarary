@@ -19,8 +19,6 @@ filegroup(
     srcs = [
         ":include",
         ":lib",
-        ":system_deps",
-        ":system_deps_static",
     ],
 )
 
