@@ -101,51 +101,66 @@ pkgs.stdenv.mkDerivation {
 
     # Copy libraries
     echo "Copying libraries..."
-    if [ -d "${pkgs.glibc}/lib" ]; then cp -rL ${pkgs.glibc}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.glibc.dev}/lib" ]; then cp -rL ${pkgs.glibc.dev}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.glibc.static}/lib" ]; then cp -rL ${pkgs.glibc.static}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.gcc-unwrapped.lib}/lib" ]; then cp -rL ${pkgs.gcc-unwrapped.lib}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.gcc-unwrapped.out}/lib" ]; then cp -rL ${pkgs.gcc-unwrapped.out}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.zlib}/lib" ]; then cp -rL ${pkgs.zlib}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.zlib.dev}/lib" ]; then cp -rL ${pkgs.zlib.dev}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.zlib.static}/lib" ]; then cp -rL ${pkgs.zlib.static}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.bzip2}/lib" ]; then cp -rL ${pkgs.bzip2}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.bzip2.dev}/lib" ]; then cp -rL ${pkgs.bzip2.dev}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.xz}/lib" ]; then cp -rL ${pkgs.xz}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.xz.dev}/lib" ]; then cp -rL ${pkgs.xz.dev}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.libxml2}/lib" ]; then cp -rL ${pkgs.libxml2}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.libxml2.dev}/lib" ]; then cp -rL ${pkgs.libxml2.dev}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.libxml2.out}/lib" ]; then cp -rL ${pkgs.libxml2.out}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.expat}/lib" ]; then cp -rL ${pkgs.expat}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.expat.dev}/lib" ]; then cp -rL ${pkgs.expat.dev}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.expat.out}/lib" ]; then cp -rL ${pkgs.expat.out}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.openssl}/lib" ]; then cp -rL ${pkgs.openssl}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.openssl.dev}/lib" ]; then cp -rL ${pkgs.openssl.dev}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.openssl.out}/lib" ]; then cp -rL ${pkgs.openssl.out}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.curl}/lib" ]; then cp -rL ${pkgs.curl}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.curl.dev}/lib" ]; then cp -rL ${pkgs.curl.dev}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.curl.out}/lib" ]; then cp -rL ${pkgs.curl.out}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.pcre}/lib" ]; then cp -rL ${pkgs.pcre}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.pcre.dev}/lib" ]; then cp -rL ${pkgs.pcre.dev}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.pcre.out}/lib" ]; then cp -rL ${pkgs.pcre.out}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.pcre2}/lib" ]; then cp -rL ${pkgs.pcre2}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.pcre2.dev}/lib" ]; then cp -rL ${pkgs.pcre2.dev}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.pcre2.out}/lib" ]; then cp -rL ${pkgs.pcre2.out}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.jansson}/lib" ]; then cp -rL ${pkgs.jansson}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.jansson.dev}/lib" ]; then cp -rL ${pkgs.jansson.dev}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.jansson.out}/lib" ]; then cp -rL ${pkgs.jansson.out}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.sqlite}/lib" ]; then cp -rL ${pkgs.sqlite}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.sqlite.dev}/lib" ]; then cp -rL ${pkgs.sqlite.dev}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.sqlite.out}/lib" ]; then cp -rL ${pkgs.sqlite.out}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.libpng}/lib" ]; then cp -rL ${pkgs.libpng}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.libpng.dev}/lib" ]; then cp -rL ${pkgs.libpng.dev}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.libpng.out}/lib" ]; then cp -rL ${pkgs.libpng.out}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.libjpeg}/lib" ]; then cp -rL ${pkgs.libjpeg}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.libjpeg.dev}/lib" ]; then cp -rL ${pkgs.libjpeg.dev}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.libjpeg.out}/lib" ]; then cp -rL ${pkgs.libjpeg.out}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.util-linux}/lib" ]; then cp -rL ${pkgs.util-linux}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.util-linux.dev}/lib" ]; then cp -rL ${pkgs.util-linux.dev}/lib/* $out/sysroot/usr/lib/ || true; fi
-    if [ -d "${pkgs.util-linux.out}/lib" ]; then cp -rL ${pkgs.util-linux.out}/lib/* $out/sysroot/usr/lib/ || true; fi
+    # First copy the actual library files
+    if [ -d "${pkgs.glibc}/lib" ]; then
+      for lib in ${pkgs.glibc}/lib/*.so*; do
+        if [ -f "$lib" ]; then
+          cp -L "$lib" $out/sysroot/usr/lib/ || true
+        fi
+      done
+    fi
+    if [ -d "${pkgs.glibc.dev}/lib" ]; then
+      for lib in ${pkgs.glibc.dev}/lib/*.so*; do
+        if [ -f "$lib" ]; then
+          cp -L "$lib" $out/sysroot/usr/lib/ || true
+        fi
+      done
+    fi
+    if [ -d "${pkgs.glibc.static}/lib" ]; then
+      for lib in ${pkgs.glibc.static}/lib/*.a; do
+        if [ -f "$lib" ]; then
+          cp -L "$lib" $out/sysroot/usr/lib/ || true
+        fi
+      done
+    fi
+    if [ -d "${pkgs.gcc-unwrapped.lib}/lib" ]; then
+      for lib in ${pkgs.gcc-unwrapped.lib}/lib/*.so*; do
+        if [ -f "$lib" ]; then
+          cp -L "$lib" $out/sysroot/usr/lib/ || true
+        fi
+      done
+    fi
+    if [ -d "${pkgs.gcc-unwrapped.out}/lib" ]; then
+      for lib in ${pkgs.gcc-unwrapped.out}/lib/*.so*; do
+        if [ -f "$lib" ]; then
+          cp -L "$lib" $out/sysroot/usr/lib/ || true
+        fi
+      done
+    fi
+
+    # Copy other libraries
+    for pkg in ${pkgs.zlib} ${pkgs.zlib.dev} ${pkgs.zlib.static} \
+               ${pkgs.bzip2} ${pkgs.bzip2.dev} \
+               ${pkgs.xz} ${pkgs.xz.dev} \
+               ${pkgs.libxml2} ${pkgs.libxml2.dev} ${pkgs.libxml2.out} \
+               ${pkgs.expat} ${pkgs.expat.dev} ${pkgs.expat.out} \
+               ${pkgs.openssl} ${pkgs.openssl.dev} ${pkgs.openssl.out} \
+               ${pkgs.curl} ${pkgs.curl.dev} ${pkgs.curl.out} \
+               ${pkgs.pcre} ${pkgs.pcre.dev} ${pkgs.pcre.out} \
+               ${pkgs.pcre2} ${pkgs.pcre2.dev} ${pkgs.pcre2.out} \
+               ${pkgs.jansson} ${pkgs.jansson.dev} ${pkgs.jansson.out} \
+               ${pkgs.sqlite} ${pkgs.sqlite.dev} ${pkgs.sqlite.out} \
+               ${pkgs.libpng} ${pkgs.libpng.dev} ${pkgs.libpng.out} \
+               ${pkgs.libjpeg} ${pkgs.libjpeg.dev} ${pkgs.libjpeg.out} \
+               ${pkgs.util-linux} ${pkgs.util-linux.dev} ${pkgs.util-linux.out}; do
+      if [ -d "$pkg/lib" ]; then
+        for lib in $pkg/lib/*.so* $pkg/lib/*.a; do
+          if [ -f "$lib" ]; then
+            cp -L "$lib" $out/sysroot/usr/lib/ || true
+          fi
+        done
+      fi
+    done
 
     cp ${./bazel/BUILD.bazel} $out/sysroot/BUILD.bazel
   '';
