@@ -76,13 +76,14 @@ pkgs.stdenv.mkDerivation {
 
   buildCommand = ''
     mkdir -p $out/sysroot/usr/include
+    mkdir -p $out/sysroot/usr/include/c++
     mkdir -p $out/sysroot/usr/lib
 
     # Copy headers
     echo "Copying headers..."
     if [ -d "${pkgs.glibc.dev}/include" ]; then cp -rL ${pkgs.glibc.dev}/include/* $out/sysroot/usr/include/ || true; fi
     if [ -d "${pkgs.gcc-unwrapped.lib}/include" ]; then cp -rL ${pkgs.gcc-unwrapped.lib}/include/* $out/sysroot/usr/include/ || true; fi
-    if [ -d "${pkgs.gcc-unwrapped}/include/c++" ]; then cp -rL ${pkgs.gcc-unwrapped}/include/c++ $out/sysroot/usr/include/ || true; fi
+    if [ -d "${pkgs.gcc-unwrapped}/include/c++/14.2.1.20250322" ]; then cp -rL ${pkgs.gcc-unwrapped}/include/c++/14.2.1.20250322/* $out/sysroot/usr/include/c++/ || true; fi
     if [ -d "${pkgs.zlib.dev}/include" ]; then cp -rL ${pkgs.zlib.dev}/include/* $out/sysroot/usr/include/ || true; fi
     if [ -d "${pkgs.bzip2.dev}/include" ]; then cp -rL ${pkgs.bzip2.dev}/include/* $out/sysroot/usr/include/ || true; fi
     if [ -d "${pkgs.xz.dev}/include" ]; then cp -rL ${pkgs.xz.dev}/include/* $out/sysroot/usr/include/ || true; fi
