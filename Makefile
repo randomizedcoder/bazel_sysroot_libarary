@@ -31,6 +31,7 @@ tarball:
 # Copy files from Nix store to sysroot directory
 copy: build
 	rm -rf sysroot
+	mkdir -p sysroot
 	rsync -av --delete result/sysroot/ sysroot/
 
 push:
