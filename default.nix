@@ -67,53 +67,6 @@ let
     util-linux.dev
     util-linux.out
   ];
-
-  build_file_content = ''
-package(default_visibility = ["//visibility:public"])
-
-# Main filegroup that includes everything
-filegroup(
-    name = "all",
-    srcs = [
-        ":include",
-        ":lib",
-    ],
-)
-
-# Include directory filegroup
-filegroup(
-    name = "include",
-    srcs = glob(["include/**"]),
-    allow_empty = True,
-)
-
-# Library directory filegroup
-filegroup(
-    name = "lib",
-    srcs = glob(["lib/**"]),
-    allow_empty = True,
-)
-
-# Shared library target
-cc_library(
-    name = "system_deps",
-    srcs = glob(["lib/*.so*"]),
-    hdrs = glob(["include/**/*.h"]),
-    includes = ["include"],
-    linkstatic = 0,
-    visibility = ["//visibility:public"],
-)
-
-# Static library target
-cc_library(
-    name = "system_deps_static",
-    srcs = glob(["lib/*.a"]),
-    hdrs = glob(["include/**/*.h"]),
-    includes = ["include"],
-    linkstatic = 1,
-    visibility = ["//visibility:public"],
-)
-'';
 in
 pkgs.stdenv.mkDerivation {
   name = "bazel-sysroot-library";
@@ -129,6 +82,7 @@ pkgs.stdenv.mkDerivation {
     echo "Copying headers..."
     if [ -d "${pkgs.glibc.dev}/include" ]; then cp -r ${pkgs.glibc.dev}/include/* $out/sysroot/include/ || true; fi
     if [ -d "${pkgs.gcc-unwrapped.lib}/include" ]; then cp -r ${pkgs.gcc-unwrapped.lib}/include/* $out/sysroot/include/ || true; fi
+    if [ -d "${pkgs.gcc-unwrapped}/include/c++" ]; then cp -r ${pkgs.gcc-unwrapped}/include/c++ $out/sysroot/include/ || true; fi
     if [ -d "${pkgs.zlib.dev}/include" ]; then cp -r ${pkgs.zlib.dev}/include/* $out/sysroot/include/ || true; fi
     if [ -d "${pkgs.bzip2.dev}/include" ]; then cp -r ${pkgs.bzip2.dev}/include/* $out/sysroot/include/ || true; fi
     if [ -d "${pkgs.xz.dev}/include" ]; then cp -r ${pkgs.xz.dev}/include/* $out/sysroot/include/ || true; fi
@@ -192,8 +146,12 @@ pkgs.stdenv.mkDerivation {
     if [ -d "${pkgs.util-linux.dev}/lib" ]; then cp -r ${pkgs.util-linux.dev}/lib/* $out/sysroot/lib/ || true; fi
     if [ -d "${pkgs.util-linux.out}/lib" ]; then cp -r ${pkgs.util-linux.out}/lib/* $out/sysroot/lib/ || true; fi
 
-    cat > $out/sysroot/BUILD.bazel << 'EOF'
-${build_file_content}
-EOF
+    cp ${./bazel/BUILD.bazel} $out/sysroot/BUILD.bazel
   '';
+
+  meta = with pkgs.lib; {
+    description = "Libraries for Bazel C/C++ builds";
+    homepage = "https://github.com/randomizedcoder/bazel_sysroot_library";
+    license = licenses.mit;
+  };
 }
