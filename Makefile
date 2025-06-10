@@ -36,7 +36,7 @@ tarball:
 copy: build
 	rm -rf sysroot
 	mkdir -p sysroot
-	rsync -av --delete result/sysroot/ sysroot/
+	rsync -av result/sysroot/ sysroot/
 
 push:
 	git add .
