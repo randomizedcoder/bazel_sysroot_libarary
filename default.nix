@@ -79,64 +79,69 @@ pkgs.stdenv.mkDerivation {
     mkdir -p $out/sysroot/usr/include/c++
     mkdir -p $out/sysroot/usr/lib
 
-    # Copy headers
-    echo "Copying headers..."
-    if [ -d "${pkgs.glibc.dev}/include" ]; then cp -rL ${pkgs.glibc.dev}/include/* $out/sysroot/usr/include/ || true; fi
-    if [ -d "${pkgs.gcc-unwrapped.lib}/include" ]; then cp -rL ${pkgs.gcc-unwrapped.lib}/include/* $out/sysroot/usr/include/ || true; fi
-    if [ -d "${pkgs.gcc-unwrapped}/include/c++/14.2.1.20250322" ]; then cp -rL ${pkgs.gcc-unwrapped}/include/c++/14.2.1.20250322/* $out/sysroot/usr/include/c++/ || true; fi
-    if [ -d "${pkgs.zlib.dev}/include" ]; then cp -rL ${pkgs.zlib.dev}/include/* $out/sysroot/usr/include/ || true; fi
-    if [ -d "${pkgs.bzip2.dev}/include" ]; then cp -rL ${pkgs.bzip2.dev}/include/* $out/sysroot/usr/include/ || true; fi
-    if [ -d "${pkgs.xz.dev}/include" ]; then cp -rL ${pkgs.xz.dev}/include/* $out/sysroot/usr/include/ || true; fi
-    if [ -d "${pkgs.libxml2.dev}/include" ]; then cp -rL ${pkgs.libxml2.dev}/include/* $out/sysroot/usr/include/ || true; fi
-    if [ -d "${pkgs.expat.dev}/include" ]; then cp -rL ${pkgs.expat.dev}/include/* $out/sysroot/usr/include/ || true; fi
-    if [ -d "${pkgs.openssl.dev}/include" ]; then cp -rL ${pkgs.openssl.dev}/include/* $out/sysroot/usr/include/ || true; fi
-    if [ -d "${pkgs.curl.dev}/include" ]; then cp -rL ${pkgs.curl.dev}/include/* $out/sysroot/usr/include/ || true; fi
-    if [ -d "${pkgs.pcre.dev}/include" ]; then cp -rL ${pkgs.pcre.dev}/include/* $out/sysroot/usr/include/ || true; fi
-    if [ -d "${pkgs.pcre2.dev}/include" ]; then cp -rL ${pkgs.pcre2.dev}/include/* $out/sysroot/usr/include/ || true; fi
-    if [ -d "${pkgs.jansson.dev}/include" ]; then cp -rL ${pkgs.jansson.dev}/include/* $out/sysroot/usr/include/ || true; fi
-    if [ -d "${pkgs.sqlite.dev}/include" ]; then cp -rL ${pkgs.sqlite.dev}/include/* $out/sysroot/usr/include/ || true; fi
-    if [ -d "${pkgs.libpng.dev}/include" ]; then cp -rL ${pkgs.libpng.dev}/include/* $out/sysroot/usr/include/ || true; fi
-    if [ -d "${pkgs.libjpeg.dev}/include" ]; then cp -rL ${pkgs.libjpeg.dev}/include/* $out/sysroot/usr/include/ || true; fi
-    if [ -d "${pkgs.util-linux.dev}/include" ]; then cp -rL ${pkgs.util-linux.dev}/include/* $out/sysroot/usr/include/ || true; fi
+    # Remember to dereference from the nix store into the output
 
-    # Copy libraries
-    echo "Copying libraries..."
-    # First copy the actual library files
+    # Copy headers
+    if [ -d "${pkgs.glibc.dev}/include" ]; then cp --dereference --recursive ${pkgs.glibc.dev}/include/* $out/sysroot/usr/include/ || true; fi
+    if [ -d "${pkgs.gcc-unwrapped.lib}/include" ]; then cp --dereference --recursive ${pkgs.gcc-unwrapped.lib}/include/* $out/sysroot/usr/include/ || true; fi
+    if [ -d "${pkgs.gcc-unwrapped}/include/c++/14.2.1.20250322" ]; then cp --dereference --recursive ${pkgs.gcc-unwrapped}/include/c++/14.2.1.20250322/* $out/sysroot/usr/include/c++/ || true; fi
+    if [ -d "${pkgs.zlib.dev}/include" ]; then cp --dereference --recursive ${pkgs.zlib.dev}/include/* $out/sysroot/usr/include/ || true; fi
+    if [ -d "${pkgs.bzip2.dev}/include" ]; then cp --dereference --recursive ${pkgs.bzip2.dev}/include/* $out/sysroot/usr/include/ || true; fi
+    if [ -d "${pkgs.xz.dev}/include" ]; then cp --dereference --recursive ${pkgs.xz.dev}/include/* $out/sysroot/usr/include/ || true; fi
+    if [ -d "${pkgs.libxml2.dev}/include" ]; then cp --dereference --recursive ${pkgs.libxml2.dev}/include/* $out/sysroot/usr/include/ || true; fi
+    if [ -d "${pkgs.expat.dev}/include" ]; then cp --dereference --recursive ${pkgs.expat.dev}/include/* $out/sysroot/usr/include/ || true; fi
+    if [ -d "${pkgs.openssl.dev}/include" ]; then cp --dereference --recursive ${pkgs.openssl.dev}/include/* $out/sysroot/usr/include/ || true; fi
+    if [ -d "${pkgs.curl.dev}/include" ]; then cp --dereference --recursive ${pkgs.curl.dev}/include/* $out/sysroot/usr/include/ || true; fi
+    if [ -d "${pkgs.pcre.dev}/include" ]; then cp --dereference --recursive ${pkgs.pcre.dev}/include/* $out/sysroot/usr/include/ || true; fi
+    if [ -d "${pkgs.pcre2.dev}/include" ]; then cp --dereference --recursive ${pkgs.pcre2.dev}/include/* $out/sysroot/usr/include/ || true; fi
+    if [ -d "${pkgs.jansson.dev}/include" ]; then cp --dereference --recursive ${pkgs.jansson.dev}/include/* $out/sysroot/usr/include/ || true; fi
+    if [ -d "${pkgs.sqlite.dev}/include" ]; then cp --dereference --recursive ${pkgs.sqlite.dev}/include/* $out/sysroot/usr/include/ || true; fi
+    if [ -d "${pkgs.libpng.dev}/include" ]; then cp --dereference --recursive ${pkgs.libpng.dev}/include/* $out/sysroot/usr/include/ || true; fi
+    if [ -d "${pkgs.libjpeg.dev}/include" ]; then cp --dereference --recursive ${pkgs.libjpeg.dev}/include/* $out/sysroot/usr/include/ || true; fi
+    if [ -d "${pkgs.util-linux.dev}/include" ]; then cp --dereference --recursive ${pkgs.util-linux.dev}/include/* $out/sysroot/usr/include/ || true; fi
+
+    # Copy core libraries
     if [ -d "${pkgs.glibc}/lib" ]; then
       for lib in ${pkgs.glibc}/lib/*.so*; do
         if [ -f "$lib" ]; then
-          cp -L "$lib" $out/sysroot/usr/lib/ || true
+          cp --dereference --recursive "$lib" $out/sysroot/usr/lib/ || true
         fi
       done
     fi
     if [ -d "${pkgs.glibc.dev}/lib" ]; then
       for lib in ${pkgs.glibc.dev}/lib/*.so*; do
         if [ -f "$lib" ]; then
-          cp -L "$lib" $out/sysroot/usr/lib/ || true
+          cp --dereference --recursive "$lib" $out/sysroot/usr/lib/ || true
         fi
       done
     fi
     if [ -d "${pkgs.glibc.static}/lib" ]; then
       for lib in ${pkgs.glibc.static}/lib/*.a; do
         if [ -f "$lib" ]; then
-          cp -L "$lib" $out/sysroot/usr/lib/ || true
+          cp --dereference --recursive "$lib" $out/sysroot/usr/lib/ || true
         fi
       done
     fi
     if [ -d "${pkgs.gcc-unwrapped.lib}/lib" ]; then
       for lib in ${pkgs.gcc-unwrapped.lib}/lib/*.so*; do
         if [ -f "$lib" ]; then
-          cp -L "$lib" $out/sysroot/usr/lib/ || true
+          cp --dereference --recursive "$lib" $out/sysroot/usr/lib/ || true
         fi
       done
     fi
     if [ -d "${pkgs.gcc-unwrapped.out}/lib" ]; then
       for lib in ${pkgs.gcc-unwrapped.out}/lib/*.so*; do
         if [ -f "$lib" ]; then
-          cp -L "$lib" $out/sysroot/usr/lib/ || true
+          cp --dereference --recursive "$lib" $out/sysroot/usr/lib/ || true
         fi
       done
     fi
+
+    # Create symlinks to the original Nix GCC paths
+    mkdir -p $out/sysroot/usr/lib/gcc/x86_64-unknown-linux-gnu/14.2.1/include
+    mkdir -p $out/sysroot/usr/lib/gcc/x86_64-unknown-linux-gnu/14.2.1/include-fixed
+    cp --dereference --recursive ${pkgs.gcc-unwrapped.out}/lib/gcc/x86_64-unknown-linux-gnu/14.2.1/include/* $out/sysroot/usr/lib/gcc/x86_64-unknown-linux-gnu/14.2.1/include/
+    cp --dereference --recursive ${pkgs.gcc-unwrapped.out}/lib/gcc/x86_64-unknown-linux-gnu/14.2.1/include-fixed/* $out/sysroot/usr/lib/gcc/x86_64-unknown-linux-gnu/14.2.1/include-fixed/
 
     # Copy other libraries
     for pkg in ${pkgs.zlib} ${pkgs.zlib.dev} ${pkgs.zlib.static} \
@@ -156,7 +161,7 @@ pkgs.stdenv.mkDerivation {
       if [ -d "$pkg/lib" ]; then
         for lib in $pkg/lib/*.so* $pkg/lib/*.a; do
           if [ -f "$lib" ]; then
-            cp -L "$lib" $out/sysroot/usr/lib/ || true
+            cp --dereference --recursive "$lib" $out/sysroot/usr/lib/ || true
           fi
         done
       fi

@@ -19,6 +19,10 @@ update-flake:
 build:
 	nix build
 
+build_debug:
+	nix --max-jobs 100 -v build
+#nix --max-jobs 100 -vvv build
+
 # Create tarball using nix
 nix-tarball:
 	nix build .#tarball
