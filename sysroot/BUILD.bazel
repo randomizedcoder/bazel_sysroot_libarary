@@ -10,8 +10,6 @@ filegroup(
     srcs = [
         ":include",
         ":lib",
-        ":system_deps",
-        ":system_deps_static",
     ],
 )
 
@@ -27,22 +25,4 @@ filegroup(
     srcs = glob(["lib/**"]),
 )
 
-# Shared library target
-cc_library(
-    name = "system_deps",
-    srcs = glob(["lib/*.so*"]),
-    hdrs = glob(["include/**/*.h"]),
-    includes = ["include"],
-    linkstatic = 0,
-    visibility = ["//visibility:public"],
-)
-
-# Static library target
-cc_library(
-    name = "system_deps_static",
-    srcs = glob(["lib/*.a"]),
-    hdrs = glob(["include/**/*.h"]),
-    includes = ["include"],
-    linkstatic = 1,
-    visibility = ["//visibility:public"],
-)
+# end
