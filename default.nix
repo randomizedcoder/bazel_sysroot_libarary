@@ -49,13 +49,13 @@ let
 
   # GCC specific paths
   gccPaths = with pkgs; [
-    { pkg = gcc-unwrapped; include = "/include/c++/14.2.1.20250322"; dest = "/usr/include/c++/14.2.1.20250322"; patterns = ["*"]; }
-    { pkg = gcc-unwrapped.out; include = "/lib/gcc/x86_64-unknown-linux-gnu/14.2.1/include"; dest = "/usr/lib/gcc/x86_64-unknown-linux-gnu/14.2.1/include"; patterns = ["*"]; }
+    { pkg = gcc-unwrapped; include = "/include/c++/14.2.1.20250322"; dest = "/include/c++/14.2.1.20250322"; patterns = ["*"]; }
+    { pkg = gcc-unwrapped.out; include = "/lib/gcc/x86_64-unknown-linux-gnu/14.2.1/include"; dest = "/lib/gcc/x86_64-unknown-linux-gnu/14.2.1/include"; patterns = ["*"]; }
   ];
 
   # Helper function to create copy commands
   mkCopyCmd = { pkg, include ? null, lib ? null, dest ? null, patterns }: let
-    targetPath = if dest != null then "\"$out/sysroot${dest}\"" else "\"$out/sysroot/usr/include\"";
+    targetPath = if dest != null then "\"$out/sysroot${dest}\"" else "\"$out/sysroot/include\"";
     sourcePath = if include != null then "${pkg}${include}" else "${pkg}${lib}";
   in
     if include != null then
@@ -69,7 +69,7 @@ let
       "if [ -d \"${sourcePath}\" ]; then " +
       "for lib in ${pkgs.lib.concatStringsSep " " (map (pattern: "${sourcePath}/${pattern}") patterns)}; do " +
       "if [ -f \"$lib\" ]; then " +
-      "cp --dereference --recursive \"$lib\" \"$out/sysroot/usr/lib/\" || true; " +
+      "cp --dereference --recursive \"$lib\" \"$out/sysroot/lib/\" || true; " +
       "fi; done; fi"
     else "";
 
@@ -78,7 +78,7 @@ let
     "if [ -d \"${pkg}/include\" ]; then " +
     "for file in ${pkg}/include/*; do " +
     "if [ -f \"$file\" ] || [ -d \"$file\" ]; then " +
-    "cp --dereference --recursive \"$file\" \"$out/sysroot/usr/include/\" || true; " +
+    "cp --dereference --recursive \"$file\" \"$out/sysroot/include/\" || true; " +
     "fi; done; fi";
 
   # Helper function to create copy commands for common libraries' libs
@@ -86,7 +86,7 @@ let
     "if [ -d \"${pkg}/lib\" ]; then " +
     "for lib in ${pkg}/lib/*.so* ${pkg}/lib/*.a; do " +
     "if [ -f \"$lib\" ]; then " +
-    "cp --dereference --recursive \"$lib\" \"$out/sysroot/usr/lib/\" || true; " +
+    "cp --dereference --recursive \"$lib\" \"$out/sysroot/lib/\" || true; " +
     "fi; done; fi";
 in
 pkgs.stdenv.mkDerivation {
@@ -97,8 +97,8 @@ pkgs.stdenv.mkDerivation {
 
   buildCommand = ''
     # Create necessary directories
-    mkdir -p "$out/sysroot/usr/include/c++/14.2.1.20250322/"
-    mkdir -p "$out/sysroot/usr/lib/gcc/x86_64-unknown-linux-gnu/14.2.1/include"
+    mkdir -p "$out/sysroot/include/c++/14.2.1.20250322/"
+    mkdir -p "$out/sysroot/lib/gcc/x86_64-unknown-linux-gnu/14.2.1/include"
 
     # Copy headers from core packages
     echo "Copying core headers..."
