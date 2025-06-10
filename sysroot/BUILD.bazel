@@ -4,16 +4,7 @@
 
 package(default_visibility = ["//visibility:public"])
 
-# Main filegroup that includes everything
-filegroup(
-    name = "all",
-    srcs = [
-        ":include",
-        ":lib",
-    ],
-)
-
-# Sysroot target that includes all components
+# Usr directory filegroup
 filegroup(
     name = "sysroot",
     srcs = [
